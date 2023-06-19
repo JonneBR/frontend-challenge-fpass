@@ -1,5 +1,4 @@
 import Head from "next/head"
-import { Button } from "components/Button/Button"
 import { LP_GRID_ITEMS } from "../lp-items"
 
 export default function Web() {
@@ -16,18 +15,26 @@ export default function Web() {
         <meta name="twitter:card" content="summary_large_image" />
         <title>Next.js Enterprise Boilerplate</title>
       </Head>
-      <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto grid max-w-screen-xl px-4 py-8 text-center lg:py-16">
-          <div className="mx-auto place-self-center">
-            <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight dark:text-white md:text-5xl xl:text-6xl">
-              Next.js Enterprise Boilerplate
+      <section
+        className=" bg-gray-900 bg-cover bg-center bg-no-repeat"
+        style={{
+          height: "700px",
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("images/spider-man-wallpaper.jpg")`,
+        }}
+      >
+        <div className="flex  px-4 py-8 text-center lg:py-16">
+          <div className="mt-32 place-self-center">
+            <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl xl:text-6xl">
+              <span className="text-purple-500">Marvel Mania:</span> Exploring the Marvel Universe and its Iconic
+              Characters
             </h1>
             <p className="mb-6 max-w-2xl font-light text-gray-500 dark:text-gray-400 md:text-lg lg:mb-8 lg:text-xl">
-              Jumpstart your enterprise project with our feature-packed, high-performance Next.js boilerplate!
-              Experience rapid UI development, AI-powered code reviews, and an extensive suite of tools for a smooth and
-              enjoyable development process.
+              {`Unleash your inner superhero with our captivating blog, 'Marvel Mania,' where we dive deep into the
+              extraordinary world of Marvel characters. From the mighty Avengers to the enigmatic X-Men, discover the
+              incredible powers, complex backstories, and thrilling adventures that make Marvel's characters truly
+              legendary.`}
             </p>
-            <Button href="https://github.com/Blazity/next-enterprise" className="mr-3">
+            {/* <Button href="https://github.com/Blazity/next-enterprise" className="mr-3">
               Get started
             </Button>
             <Button
@@ -35,11 +42,11 @@ export default function Web() {
               intent="secondary"
             >
               Deploy Now
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-gray-900 dark:bg-gray-900">
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
           <div className="justify-center space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0 lg:grid-cols-3">
             {LP_GRID_ITEMS.map((singleItem) => (
