@@ -100,7 +100,7 @@ const Carousel = () => {
 
   return (
     <div className="mx-auto my-12">
-      <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Em destaque</h2>
+      <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Explore</h2>
       <div className="relative overflow-hidden">
         <div className="absolute flex h-full w-full justify-between">
           <button
@@ -140,14 +140,24 @@ const Carousel = () => {
         </div>
         <div
           ref={carousel}
-          className="relative z-0 flex touch-pan-x snap-x snap-mandatory gap-1 overflow-hidden scroll-smooth border-2"
+          className="relative z-0 flex touch-pan-x snap-x snap-mandatory gap-1 overflow-hidden scroll-smooth"
         >
           {data.resources.map((resource, index) => {
-            console.log(resource)
             return (
-              <div key={index} className="relative snap-start text-center">
+              <div
+                key={index}
+                className="group relative snap-start text-center"
+                onClick={() => console.log("resource", resource)}
+              >
                 <div className="h-80 w-64 cursor-pointer overflow-hidden rounded">
-                  <Image width={300} height={300} src="/images/avengers-2-poster.jpg" alt="Thumbnail" />
+                  <Image width={250} height={0} src="/images/avengers-2-poster.jpg" alt="Thumbnail" />
+                  <div
+                    className="absolute -bottom-10 flex h-full w-full items-center 
+                  justify-center bg-black/30 opacity-0 transition-all
+                  duration-300 group-hover:bottom-0 group-hover:opacity-100"
+                  >
+                    <h2 className="mb-12 text-2xl font-extrabold leading-8 text-white">Avengers: Age of Ultron</h2>
+                  </div>
                 </div>
               </div>
             )
