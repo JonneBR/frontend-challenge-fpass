@@ -1,5 +1,5 @@
 import Head from "next/head"
-import { LP_GRID_ITEMS } from "../lp-items"
+import Carousel from "components/Carousel/Carousel"
 
 export default function Web() {
   return (
@@ -13,7 +13,7 @@ export default function Web() {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
-        <title>Next.js Enterprise Boilerplate</title>
+        <title>Marvel Mania: Exploring the Marvel Universe and its Iconic Characters</title>
       </Head>
       <section
         className=" bg-gray-900 bg-cover bg-center bg-no-repeat"
@@ -22,7 +22,7 @@ export default function Web() {
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("images/spider-man-wallpaper.jpg")`,
         }}
       >
-        <div className="flex  px-4 py-8 text-center lg:py-16">
+        <div className="flex px-4 py-8 text-center lg:py-16">
           <div className="mt-32 place-self-center">
             <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl xl:text-6xl">
               <span className="text-purple-500">Marvel Mania:</span> Exploring the Marvel Universe and its Iconic
@@ -46,19 +46,10 @@ export default function Web() {
           </div>
         </div>
       </section>
-      <section className="bg-gray-900 dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
-          <div className="justify-center space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0 lg:grid-cols-3">
-            {LP_GRID_ITEMS.map((singleItem) => (
-              <div key={singleItem.title} className="flex flex-col items-center justify-center text-center">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 p-1.5 text-blue-700 dark:bg-primary-900 lg:h-12 lg:w-12">
-                  {singleItem.icon}
-                </div>
-                <h3 className="mb-2 text-xl font-bold dark:text-white">{singleItem.title}</h3>
-                <p className="text-gray-500 dark:text-gray-400">{singleItem.description}</p>
-              </div>
-            ))}
-          </div>
+
+      <section className=" bg-gray-900">
+        <div className="mx-auto max-w-full px-4 py-8 sm:py-16 lg:px-6 ">
+          <Carousel />
         </div>
       </section>
     </>
