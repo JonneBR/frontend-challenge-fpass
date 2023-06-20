@@ -58,8 +58,11 @@ const data: Props = {
     },
   ],
 }
+interface CarouselProps {
+  title: string
+}
 
-const Carousel = () => {
+const Carousel = ({ title }: CarouselProps): JSX.Element => {
   const maxScrollWidth = useRef(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const carousel = useRef<any>(null)
@@ -100,7 +103,7 @@ const Carousel = () => {
 
   return (
     <div className="mx-auto my-12">
-      <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Explore</h2>
+      <h2 className="mb-12 text-4xl font-bold leading-8 text-white">{title}</h2>
       <div className="relative overflow-hidden">
         <div className="absolute flex h-full w-full justify-between">
           <button
