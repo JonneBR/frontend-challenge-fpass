@@ -16,9 +16,10 @@ export default function Web() {
         <title>Marvel Mania: Exploring the Marvel Universe and its Iconic Characters</title>
       </Head>
       <section
-        className=" bg-gray-900 bg-cover bg-center bg-no-repeat"
+        className="rotate-0 bg-gray-900 bg-cover
+        bg-center bg-no-repeat after:absolute after:-bottom-1 after:top-auto after:h-32 after:w-full after:bg-gradient-to-t after:from-gray-900"
         style={{
-          height: "700px",
+          height: "750px",
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("images/spider-man-wallpaper.jpg")`,
         }}
       >
@@ -47,9 +48,10 @@ export default function Web() {
         </div>
       </section>
 
-      <section className=" bg-gray-900">
+      <section className="bg-gray-900">
         <div className="mx-auto max-w-full px-4 py-8 sm:py-16 lg:px-6 ">
-          <Carousel />
+          <Carousel title={"Explore"} />
+          <Carousel title={"Top Most Viewed"} />
         </div>
       </section>
     </>
