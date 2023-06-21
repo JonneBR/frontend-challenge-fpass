@@ -5,8 +5,8 @@ interface HttpClient<R = any> {
 interface HttpRequest {
   url: string
   method: HttpMethod
-  headers?: unknown
-  body?: unknown
+  headers?: HeadersInit
+  body?: any
 }
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"
@@ -22,6 +22,8 @@ class FetchHttpClient implements HttpClient {
     try {
       fetchResponse = await fetch(data.url, {
         method: data.method,
+        headers: data.headers,
+        body: data.body,
       })
       const dataResponse: any = await fetchResponse.json()
 
@@ -60,13 +62,22 @@ export function fetchHttpClientStub(data: object, options?: Options) {
 
 describe("fetch-http-client", () => {
   it("Should call fetch with correct values", () => {
-    const dummy: HttpRequest = { url: "random.com", method: "GET" }
+    const dummy: HttpRequest = {
+      url: "random.com",
+      method: "GET",
+      body: "",
+      headers: { "Content-Type": "application/json" },
+    }
     const sut = new FetchHttpClient()
     global.fetch = jest.fn().mockImplementation(fetchHttpClientStub({}))
 
     sut.request(dummy)
 
-    expect(fetch).toHaveBeenCalledWith(dummy.url, { method: dummy.method })
+    expect(fetch).toHaveBeenCalledWith(dummy.url, {
+      method: dummy.method,
+      body: "",
+      headers: { "Content-Type": "application/json" },
+    })
   })
 
   it("Should return correct error", async () => {
