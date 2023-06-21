@@ -24,10 +24,10 @@ export interface Character {
   resourceURI: string
   urls: Url
   thumbnail: Image
-  comics: ComicList
-  stories: StoryList
-  events: EventList
-  series: SeriesList
+  comics: ComicList[]
+  stories: StoryList[]
+  events: EventList[]
+  series: SeriesList[]
 }
 
 export interface Url {
@@ -43,7 +43,7 @@ export interface Image {
 export interface ComicList {
   available: number
   returned: number
-  collectionURI: string // (string, optional): The path to the full list of issues in this collection.,
+  collectionURI: string
   items: number
 }
 
@@ -56,7 +56,7 @@ export interface StoryList {
   available: number
   returned: number
   collectionURI: string
-  items: StorySummary
+  items: StorySummary[]
 }
 export interface StorySummary {
   resourceURI: string
@@ -67,7 +67,7 @@ export interface EventList {
   available: number
   returned: number
   collectionURI: string
-  items: EventSummary
+  items: EventSummary[]
 }
 export interface EventSummary {
   resourceURI: string
@@ -77,7 +77,7 @@ export interface SeriesList {
   available: number
   returned: number
   collectionURI: string
-  items: SeriesSummary
+  items: SeriesSummary[]
 }
 export interface SeriesSummary {
   resourceURI: string
