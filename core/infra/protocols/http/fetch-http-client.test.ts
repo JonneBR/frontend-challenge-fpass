@@ -1,4 +1,4 @@
-interface HttpClient<R = unknown> {
+interface HttpClient<R = any> {
   request: (data: HttpRequest) => Promise<HttpResponse<R>>
 }
 
@@ -11,7 +11,7 @@ interface HttpRequest {
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"
 
-interface HttpResponse<T = unknown> {
+interface HttpResponse<T = any> {
   statusCode: number
   body?: T
 }
@@ -23,24 +23,20 @@ class FetchHttpClient implements HttpClient {
       fetchResponse = await fetch(data.url, {
         method: data.method,
       })
+      const dataResponse: any = await fetchResponse.json()
+
       if (!fetchResponse.ok) {
-        throw new Error(fetchResponse.statusText)
+        throw new Error(JSON.stringify(dataResponse), { cause: fetchResponse.status })
       }
-      {
-        const data = await fetchResponse.json()
-        return {
-          statusCode: fetchResponse?.status,
-          body: data,
-        }
-      }
-    } catch (error) {
-      if (fetchResponse)
-        return {
-          statusCode: fetchResponse.status,
-          body: { message: fetchResponse.statusText },
-        }
+
       return {
-        statusCode: 500,
+        statusCode: fetchResponse?.status,
+        body: dataResponse,
+      }
+    } catch (error: any) {
+      return {
+        statusCode: error.cause,
+        body: JSON.parse(error.message),
       }
     }
   }
@@ -79,11 +75,16 @@ describe("fetch-http-client", () => {
 
     global.fetch = jest
       .fn()
-      .mockImplementation(fetchHttpClientStub({}, { status: 404, ok: false, statusText: "Not Found" }))
+      .mockImplementation(
+        fetchHttpClientStub(
+          { message: "The item has not been found." },
+          { status: 404, ok: false, statusText: "Not Found" }
+        )
+      )
 
     const httpResponse = await sut.request(dummy)
 
-    expect(httpResponse).toEqual({ statusCode: 404, body: { message: "Not Found" } })
+    expect(httpResponse).toEqual({ statusCode: 404, body: { message: "The item has not been found." } })
   })
 
   it("Should return correct response on success", async () => {
