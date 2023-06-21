@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react"
 import Drawer from "components/Drawer/Drawer"
 
 interface Props {
-  resources: {
-    title: string
-    link: string
-    imageUrl: string
-  }[]
+  resources: Resource[]
+}
+
+interface Resource {
+  title: string
+  link: string
+  imageUrl: string
 }
 
 const data: Props = {
@@ -63,6 +65,8 @@ interface CarouselProps {
   title: string
 }
 
+let resourceTitle = ""
+
 const Carousel = ({ title }: CarouselProps): JSX.Element => {
   const maxScrollWidth = useRef(0)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
@@ -105,6 +109,11 @@ const Carousel = ({ title }: CarouselProps): JSX.Element => {
 
   function onClose(open: boolean) {
     setOpen(open)
+  }
+
+  function handleClick(resource: Resource) {
+    resourceTitle = resource.title
+    setOpen(!open)
   }
 
   return (
@@ -154,7 +163,11 @@ const Carousel = ({ title }: CarouselProps): JSX.Element => {
           >
             {data.resources.map((resource, index) => {
               return (
-                <div key={index} className="group relative snap-start text-center" onClick={() => setOpen(!open)}>
+                <div
+                  key={index}
+                  className="group relative snap-start text-center"
+                  onClick={() => handleClick(resource)}
+                >
                   <div className="h-80 w-64 cursor-pointer overflow-hidden rounded">
                     <Image width={250} height={0} src="/images/avengers-2-poster.jpg" alt="Thumbnail" />
                     <div
@@ -171,7 +184,12 @@ const Carousel = ({ title }: CarouselProps): JSX.Element => {
           </div>
         </div>
       </div>
-      <Drawer open={open} onClose={onClose} />
+      <Drawer open={open} onClose={onClose}>
+        <div className="px-6 py-4">
+          <h2 className="text-lg font-semibold">{resourceTitle}</h2>
+          <p className="text-gray-500">This is a drawer.</p>
+        </div>
+      </Drawer>
     </>
   )
 }
