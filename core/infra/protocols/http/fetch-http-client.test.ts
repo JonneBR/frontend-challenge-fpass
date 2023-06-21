@@ -26,7 +26,13 @@ class FetchHttpClient implements HttpClient {
       if (!fetchResponse.ok) {
         throw new Error(fetchResponse.statusText)
       }
-      return Promise.resolve({ statusCode: 200 })
+      {
+        const data = await fetchResponse.json()
+        return {
+          statusCode: fetchResponse?.status,
+          body: data,
+        }
+      }
     } catch (error) {
       if (fetchResponse)
         return {
@@ -43,16 +49,13 @@ class FetchHttpClient implements HttpClient {
 interface Options {
   status: number
   ok: boolean
-  statusText: string
+  statusText?: string
 }
 export function fetchHttpClientStub(data: object, options?: Options) {
   return function fetchStub() {
     return new Promise((resolve) => {
       resolve({
-        json: () =>
-          Promise.resolve({
-            ...data,
-          }),
+        json: () => Promise.resolve(data),
         ...options,
       })
     })
@@ -81,5 +84,17 @@ describe("fetch-http-client", () => {
     const httpResponse = await sut.request(dummy)
 
     expect(httpResponse).toEqual({ statusCode: 404, body: { message: "Not Found" } })
+  })
+
+  it("Should return correct response on success", async () => {
+    const dummy: HttpRequest = { url: "random.com", method: "GET" }
+    const dummyResponse = ["Hello", "World"]
+    const sut = new FetchHttpClient()
+
+    global.fetch = jest.fn().mockImplementation(fetchHttpClientStub(dummyResponse, { status: 200, ok: true }))
+
+    const httpResponse = await sut.request(dummy)
+
+    expect(httpResponse).toEqual({ statusCode: 200, body: dummyResponse })
   })
 })
