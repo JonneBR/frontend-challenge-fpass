@@ -24,15 +24,6 @@ export default function Home() {
           incredible powers, complex backstories, and thrilling adventures that make Marvel's characters truly
           legendary.`}
             </p>
-            {/* <Button href="https://github.com/Blazity/next-enterprise" className="mr-3">
-          Get started
-        </Button>
-        <Button
-          href="https://vercel.com/new/git/external?repository-url=https://github.com/Blazity/next-enterprise"
-          intent="secondary"
-        >
-          Deploy Now
-        </Button> */}
           </div>
         </div>
       </section>
