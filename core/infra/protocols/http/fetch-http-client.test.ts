@@ -16,47 +16,59 @@ export function fetchHttpClientStub(data: any, options?: Options) {
   }
 }
 
+const makeSut = () => {
+  const dummyRequest: HttpRequest = {
+    url: "random.com",
+    method: "GET",
+    body: "",
+    headers: { "Content-Type": "application/json" },
+  }
+  const dummyResponse = ["Hello", "World"]
+
+  const sut = new FetchHttpClient()
+
+  return {
+    sut,
+    dummyRequest,
+    dummyResponse,
+  }
+}
+
 describe("fetch-http-client", () => {
   it("Should call fetch with correct values", () => {
-    const dummy: HttpRequest = {
-      url: "random.com",
-      method: "GET",
-      body: "",
-      headers: { "Content-Type": "application/json" },
-    }
-    const sut = new FetchHttpClient()
+    const { sut, dummyRequest } = makeSut()
+
     global.fetch = jest.fn().mockImplementation(fetchHttpClientStub({}))
 
-    sut.request(dummy)
+    sut.request(dummyRequest)
 
-    expect(fetch).toHaveBeenCalledWith(dummy.url, {
-      method: dummy.method,
+    expect(fetch).toHaveBeenCalledWith(dummyRequest.url, {
+      method: dummyRequest.method,
       body: "",
       headers: { "Content-Type": "application/json" },
     })
   })
 
   it("Should return correct error", async () => {
-    const dummy: HttpRequest = { url: "random.com", method: "GET" }
-    const sut = new FetchHttpClient()
+    const { sut, dummyRequest } = makeSut()
+    const { url, method } = dummyRequest
 
     global.fetch = jest
       .fn()
       .mockImplementation(fetchHttpClientStub("Not Found", { status: 404, ok: false, statusText: "Not Found" }))
 
-    const httpResponse = await sut.request(dummy)
+    const httpResponse = await sut.request({ url, method })
 
     expect(httpResponse).toEqual({ statusCode: 404, body: "Not Found" })
   })
 
   it("Should return correct response on success", async () => {
-    const dummy: HttpRequest = { url: "random.com", method: "GET" }
-    const dummyResponse = ["Hello", "World"]
-    const sut = new FetchHttpClient()
+    const { sut, dummyRequest, dummyResponse } = makeSut()
+    const { url, method } = dummyRequest
 
     global.fetch = jest.fn().mockImplementation(fetchHttpClientStub(dummyResponse, { status: 200, ok: true }))
 
-    const httpResponse = await sut.request(dummy)
+    const httpResponse = await sut.request({ url, method })
 
     expect(httpResponse).toEqual({ statusCode: 200, body: dummyResponse })
   })
