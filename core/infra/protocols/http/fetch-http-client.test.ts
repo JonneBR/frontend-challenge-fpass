@@ -1,55 +1,11 @@
-interface HttpClient<R = any> {
-  request: (data: HttpRequest) => Promise<HttpResponse<R>>
-}
-
-interface HttpRequest {
-  url: string
-  method: HttpMethod
-  headers?: HeadersInit
-  body?: any
-}
-
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"
-
-interface HttpResponse<T = any> {
-  statusCode: number
-  body?: T
-}
-
-class FetchHttpClient implements HttpClient {
-  async request(data: HttpRequest): Promise<HttpResponse> {
-    let fetchResponse: Response | null = null
-    try {
-      fetchResponse = await fetch(data.url, {
-        method: data.method,
-        headers: data.headers,
-        body: data.body,
-      })
-      const dataResponse: any = await fetchResponse.json()
-
-      if (!fetchResponse.ok) {
-        throw new Error(JSON.stringify(dataResponse), { cause: fetchResponse.status })
-      }
-
-      return {
-        statusCode: fetchResponse?.status,
-        body: dataResponse,
-      }
-    } catch (error: any) {
-      return {
-        statusCode: error.cause,
-        body: JSON.parse(error.message),
-      }
-    }
-  }
-}
+import { FetchHttpClient, HttpRequest } from "./fetch-http-client"
 
 interface Options {
   status: number
   ok: boolean
   statusText?: string
 }
-export function fetchHttpClientStub(data: object, options?: Options) {
+export function fetchHttpClientStub(data: any, options?: Options) {
   return function fetchStub() {
     return new Promise((resolve) => {
       resolve({
@@ -86,16 +42,11 @@ describe("fetch-http-client", () => {
 
     global.fetch = jest
       .fn()
-      .mockImplementation(
-        fetchHttpClientStub(
-          { message: "The item has not been found." },
-          { status: 404, ok: false, statusText: "Not Found" }
-        )
-      )
+      .mockImplementation(fetchHttpClientStub("Not Found", { status: 404, ok: false, statusText: "Not Found" }))
 
     const httpResponse = await sut.request(dummy)
 
-    expect(httpResponse).toEqual({ statusCode: 404, body: { message: "The item has not been found." } })
+    expect(httpResponse).toEqual({ statusCode: 404, body: "Not Found" })
   })
 
   it("Should return correct response on success", async () => {
