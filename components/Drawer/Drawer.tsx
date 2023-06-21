@@ -4,10 +4,11 @@ interface Props {
   open: boolean
   onClose: (open: boolean) => void
   lockBackgroundScroll?: boolean
+  children: React.ReactNode
 }
 
 export default function Drawer(props: Props) {
-  const { open, onClose, lockBackgroundScroll = true } = props
+  const { open, onClose, lockBackgroundScroll = true, children } = props
   const bodyRef = useRef<HTMLBodyElement | null>(null)
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function Drawer(props: Props) {
       />
 
       <div
-        className={`fixed left-0 top-0 z-20 h-full w-64 -translate-x-full bg-white shadow-lg transition-all duration-500 ${
+        className={`fixed left-0 top-0 z-20 h-full w-80 -translate-x-full bg-white shadow-lg transition-all duration-500 ${
           open ? "peer-checked:translate-x-0" : ""
         }`}
       >
@@ -50,12 +51,8 @@ export default function Drawer(props: Props) {
             X
           </button>
         </div>
-        <div className="px-6 py-4">
-          <h2 className="text-lg font-semibold">Drawer</h2>
-          <p className="text-gray-500">This is a drawer.</p>
-        </div>
+        {children}
       </div>
-
       {open && <div className="fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-50" onClick={handleToggle} />}
     </div>
   )
