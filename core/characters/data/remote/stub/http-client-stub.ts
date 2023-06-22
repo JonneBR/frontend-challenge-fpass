@@ -1,12 +1,12 @@
-import { HttpClient, HttpMethod, HttpRequest, HttpResponse, HttpStatusCode } from "core/data/protocols/http"
+import { HttpClient, HttpMethod, HttpRequest, HttpResponse } from "core/data/protocols/http"
 
-export class HttpClientSpy<R = any> implements HttpClient<R> {
+export class HttpClientSpy<R = never> implements HttpClient<R> {
   url = ""
   method: HttpMethod = "GET"
   body?: object
   headers?: HeadersInit
   response: HttpResponse<R> = {
-    statusCode: HttpStatusCode.ok,
+    statusCode: 200,
   }
 
   async request(data: HttpRequest): Promise<HttpResponse<R>> {

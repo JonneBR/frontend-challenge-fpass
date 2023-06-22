@@ -1,25 +1,7 @@
 import { Character, CharacterDataWrapper, LoadCharacters } from "core/characters/domain/character"
-import { HttpClient, HttpMethod, HttpRequest, HttpResponse } from "core/data/protocols/http"
+import { HttpClient } from "core/data/protocols/http"
 import { characterDataWrapper, results } from "./dummy"
-
-class HttpClientSpy<R = never> implements HttpClient<R> {
-  url = ""
-  method: HttpMethod = "GET"
-  body?: object
-  headers?: HeadersInit
-  response: HttpResponse<R> = {
-    statusCode: 200,
-  }
-
-  async request(data: HttpRequest): Promise<HttpResponse<R>> {
-    this.url = data.url
-    this.method = data.method
-    this.body = data.body
-    this.headers = data.headers
-
-    return this.response
-  }
-}
+import { HttpClientSpy } from "./stub"
 
 class ListCharactersController implements LoadCharacters {
   constructor(private readonly url: string, private readonly httpClient: HttpClient<CharacterDataWrapper>) {}
