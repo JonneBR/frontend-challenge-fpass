@@ -6,7 +6,7 @@ import { HttpClientSpy } from "./stub"
 const BASE_URL = "https://gateway.marvel.com"
 
 const makeSut = () => {
-  const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
+  const httpClientSpy = new HttpClientSpy<CharacterDataWrapper | string>()
   const sut = new ListCharactersController(BASE_URL, httpClientSpy)
 
   return { sut, httpClientSpy }
@@ -33,8 +33,9 @@ describe("fetch-http-client", () => {
   it("should throw an Error", async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.response.statusCode = 404
+    httpClientSpy.response.body = "Not Found!"
 
     const response = sut.getCharacters()
-    await expect(response).rejects.toThrow("Something went wrong!")
+    await expect(response).rejects.toThrow("Not Found!")
   })
 })
