@@ -1,3 +1,6 @@
+export interface LoadCharacters {
+  getCharacters: () => Promise<Character[]>
+}
 export interface CharacterDataWrapper {
   code: number
   status: string
@@ -20,14 +23,14 @@ export interface Character {
   id: number
   name: string
   description: string
+  thumbnail: Image
   modified: Date
   resourceURI: string
-  urls: Url
-  thumbnail: Image
-  comics: ComicList[]
-  stories: StoryList[]
-  events: EventList[]
-  series: SeriesList[]
+  urls: Url[]
+  comics: ComicList
+  stories: StoryList
+  events: EventList
+  series: SeriesList
 }
 
 export interface Url {
@@ -44,7 +47,7 @@ export interface ComicList {
   available: number
   returned: number
   collectionURI: string
-  items: number
+  items: ComicSummary[]
 }
 
 export interface ComicSummary {
