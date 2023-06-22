@@ -1,73 +1,24 @@
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Drawer from "components/Drawer/Drawer"
+import type { Character } from "core/characters/domain/character"
 
-interface Props {
-  resources: Resource[]
-}
-
-interface Resource {
-  title: string
-  link: string
-  imageUrl: string
-}
-
-const data: Props = {
-  resources: [
-    {
-      title: "Find me on Twitter",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/any",
-    },
-    {
-      title: "Welcome to Ark Labs",
-      link: "https://ark-labs.co.uk",
-      imageUrl: "https://placeimg.com/300/300/animals",
-    },
-    {
-      title: "Some sort of third title",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/architecture",
-    },
-    {
-      title: "A personal site perhaps?",
-      link: "https://robkendal.co.uk",
-      imageUrl: "https://placeimg.com/300/300/nature",
-    },
-    {
-      title: "Super item number five",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/people",
-    },
-    {
-      title: "Super item number six",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/tech",
-    },
-    {
-      title: "Super item number seven",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/animals",
-    },
-    {
-      title: "Super item number eight",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/people",
-    },
-    {
-      title: "Super item number the last",
-      link: "https://twitter.com/kendalmintcode",
-      imageUrl: "https://placeimg.com/300/300/tech",
-    },
-  ],
-}
 interface CarouselProps {
-  title: string
+  title: React.ReactNode | string
+  characters: Character[]
 }
 
-let resourceTitle = ""
+interface CharacterBasic {
+  name: string
+  description: string
+}
 
-const Carousel = ({ title }: CarouselProps): JSX.Element => {
+const clicked: CharacterBasic = {
+  name: "",
+  description: "",
+}
+
+const Carousel = ({ title, characters }: CarouselProps): JSX.Element => {
   const maxScrollWidth = useRef(0)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
@@ -111,15 +62,19 @@ const Carousel = ({ title }: CarouselProps): JSX.Element => {
     setOpen(open)
   }
 
-  function handleClick(resource: Resource) {
-    resourceTitle = resource.title
+  function handleClick(resource: Character) {
+    clicked.name = resource.name
+    clicked.description = resource.description
     setOpen(!open)
   }
 
   return (
     <>
       <div className="mx-auto my-12">
-        <h2 className="mb-12 text-4xl font-bold leading-8 text-white">{title}</h2>
+        {/* <h2 className="mb-12 text-4xl font-bold leading-8 text-white">{title}</h2> */}
+        <h2 className="mb-12 text-4xl font-bold leading-8 text-white">
+          Characters of the <span className="text-purple-500">week:</span>
+        </h2>
         <div className="relative overflow-hidden">
           <div className="absolute flex h-full w-full justify-between">
             <button
@@ -161,21 +116,22 @@ const Carousel = ({ title }: CarouselProps): JSX.Element => {
             ref={carousel}
             className="relative z-0 flex touch-pan-x snap-x snap-mandatory gap-1 overflow-hidden scroll-smooth"
           >
-            {data.resources.map((resource, index) => {
+            {characters.map((resource) => {
+              const imageUrl = `${resource.thumbnail.path}.${resource.thumbnail.extension}`
               return (
                 <div
-                  key={index}
+                  key={resource.name}
                   className="group relative snap-start text-center"
                   onClick={() => handleClick(resource)}
                 >
-                  <div className="h-80 w-64 cursor-pointer overflow-hidden rounded">
-                    <Image width={250} height={0} src="/images/avengers-2-poster.jpg" alt="Thumbnail" />
+                  <div className="w-64 cursor-pointer overflow-hidden rounded">
+                    <Image style={{ height: 310 }} width={250} height={310} src={imageUrl} alt={resource.name} />
                     <div
                       className="absolute -bottom-10 flex h-full w-full items-center 
                   justify-center bg-black/30 opacity-0 transition-all
                   duration-300 group-hover:bottom-0 group-hover:opacity-100"
                     >
-                      <h2 className="mb-12 text-2xl font-extrabold leading-8 text-white">Avengers: Age of Ultron</h2>
+                      <h2 className="mb-12 text-2xl font-extrabold leading-8 text-white">{resource.name}</h2>
                     </div>
                   </div>
                 </div>
@@ -184,10 +140,11 @@ const Carousel = ({ title }: CarouselProps): JSX.Element => {
           </div>
         </div>
       </div>
+
       <Drawer open={open} onClose={onClose}>
-        <div className="px-6 py-4">
-          <h2 className="text-lg font-semibold">{resourceTitle}</h2>
-          <p className="text-gray-500">This is a drawer.</p>
+        <div className="flex flex-col items-center justify-center px-6 py-4">
+          <h2 className="text-lg font-semibold text-white">{clicked.name}</h2>
+          <p className="pt-10 text-gray-500">{clicked.description}</p>
         </div>
       </Drawer>
     </>
