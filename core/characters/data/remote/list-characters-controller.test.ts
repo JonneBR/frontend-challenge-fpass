@@ -37,11 +37,18 @@ class ListCharactersController implements LoadCharacters {
   }
 }
 
+const BASE_URL = "https://gateway.marvel.com"
+
+const makeSut = () => {
+  const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
+  const sut = new ListCharactersController(BASE_URL, httpClientSpy)
+
+  return { sut, httpClientSpy }
+}
+
 describe("fetch-http-client", () => {
   it("should return a list of characters", async () => {
-    const BASE_URL = "https://gateway.marvel.com"
-    const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
-    const sut = new ListCharactersController(BASE_URL, httpClientSpy)
+    const { sut, httpClientSpy } = makeSut()
 
     httpClientSpy.response.body = characterDataWrapper
     const response = await sut.getCharacters()
@@ -49,9 +56,7 @@ describe("fetch-http-client", () => {
   })
 
   it("should call httpClient with correct URL and Method", async () => {
-    const BASE_URL = "https://gateway.marvel.com"
-    const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
-    const sut = new ListCharactersController(BASE_URL, httpClientSpy)
+    const { sut, httpClientSpy } = makeSut()
 
     httpClientSpy.response.body = characterDataWrapper
     await sut.getCharacters()
@@ -60,10 +65,8 @@ describe("fetch-http-client", () => {
   })
 
   it("should throw an Error", async () => {
-    const BASE_URL = "https://gateway.marvel.com"
-    const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
+    const { sut, httpClientSpy } = makeSut()
     httpClientSpy.response.statusCode = 404
-    const sut = new ListCharactersController(BASE_URL, httpClientSpy)
 
     const response = sut.getCharacters()
     await expect(response).rejects.toThrow("Something went wrong!")
