@@ -2,7 +2,7 @@ import { Character, CharacterDataWrapper, LoadCharacters } from "core/characters
 import { HttpClient } from "core/data/protocols/http"
 
 export class ListCharactersController implements LoadCharacters {
-  constructor(private readonly url: string, private readonly httpClient: HttpClient<CharacterDataWrapper>) {}
+  constructor(private readonly url: string, private readonly httpClient: HttpClient<CharacterDataWrapper | string>) {}
 
   async getCharacters(): Promise<Character[]> {
     const httpResponse = await this.httpClient.request({
@@ -10,9 +10,8 @@ export class ListCharactersController implements LoadCharacters {
       method: "GET",
     })
 
-    const characters = httpResponse.body?.data.results
-    const isOk = httpResponse.statusCode === 200
-    if (isOk && characters) return characters
-    throw new Error("Something went wrong!")
+    if (httpResponse.statusCode !== 200) throw new Error(httpResponse.body as string)
+    const body = httpResponse.body as CharacterDataWrapper
+    return body.data.results
   }
 }
