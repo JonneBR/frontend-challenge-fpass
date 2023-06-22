@@ -4,7 +4,8 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 
 export default function Navbar() {
-  const [scrollPos, setScrollPos] = useState(0)
+  const [scrollPos, setScrollPos] = useState<number>(0)
+  const [inputValue, setInputValue] = useState<string>("")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +23,10 @@ export default function Navbar() {
     scrollPos > 0 ? "bg-gray-950" : "bg-transparent"
   }`
 
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setInputValue(event.target.value)
+  }
+
   return (
     <nav className={navbarClasses}>
       <div className="flex h-full w-full items-center justify-center">
@@ -32,11 +37,12 @@ export default function Navbar() {
         </div>
         <div className="relative w-80">
           <input
+            onChange={handleChange}
             placeholder="Favorite character"
             className="h-10 w-full rounded-md border-2 border-gray-700 bg-gray-800 p-4 pr-10 text-white outline-none"
           />
           <div className="absolute inset-y-0 right-0 z-10 flex items-center pr-3">
-            <Link href="/search/Spider-Man">
+            <Link href={inputValue && `/search/${inputValue.replace(/\s/g, "+")}`}>
               <svg className="h-6 w-6 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path
                   fillRule="evenodd"
