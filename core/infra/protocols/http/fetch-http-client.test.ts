@@ -1,4 +1,5 @@
-import { FetchHttpClient, HttpRequest } from "./fetch-http-client"
+import { HttpRequest } from "core/data/protocols/http"
+import { FetchHttpClient } from "./fetch-http-client"
 
 interface Options {
   status: number
