@@ -21,7 +21,7 @@ export default function Home(props: Props) {
     bg-center bg-no-repeat after:absolute after:-bottom-1 after:top-auto after:h-32 after:w-full after:bg-gradient-to-t after:from-gray-900"
         style={{
           height: "750px",
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("images/spider-man-wallpaper.jpg")`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("../images/spider-man-wallpaper.jpg")`,
         }}
       >
         <div className="flex px-4 py-8 text-center lg:py-16">
