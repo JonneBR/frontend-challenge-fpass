@@ -4,7 +4,7 @@ import Drawer from "components/Drawer/Drawer"
 import type { Character } from "core/characters/domain/character"
 
 interface CarouselProps {
-  title: React.ReactNode | string
+  title: React.ReactNode
   characters: Character[]
 }
 
@@ -71,10 +71,7 @@ const Carousel = ({ title, characters }: CarouselProps): JSX.Element => {
   return (
     <>
       <div className="mx-auto my-12">
-        {/* <h2 className="mb-12 text-4xl font-bold leading-8 text-white">{title}</h2> */}
-        <h2 className="mb-12 text-4xl font-bold leading-8 text-white">
-          Characters of the <span className="text-purple-500">week:</span>
-        </h2>
+        {title}
         <div className="relative overflow-hidden">
           <div className="absolute flex h-full w-full justify-between">
             <button

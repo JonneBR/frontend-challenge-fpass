@@ -1,9 +1,21 @@
 "use client"
 import Carousel from "components/Carousel/Carousel"
-
-export default function Home() {
+import { Character } from "core/characters/domain/character"
+import EXPLORE from "explore-characters.json"
+interface Props {
+  results: Character[] | undefined
+}
+export default function Home(props: Props) {
+  const { results } = props
+  const explore = <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Explore</h2>
+  const week = (
+    <h2 className="mb-12 text-4xl font-bold leading-8 text-white">
+      Characters of the <span className="text-purple-500">week:</span>
+    </h2>
+  )
   return (
     <>
+      {/* Header */}
       <section
         className="rotate-0 bg-gray-900 bg-cover
     bg-center bg-no-repeat after:absolute after:-bottom-1 after:top-auto after:h-32 after:w-full after:bg-gradient-to-t after:from-gray-900"
@@ -27,10 +39,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Carousel */}
       <section className="bg-gray-900">
         <div className="mx-auto max-w-full px-4 py-8 sm:py-16 lg:px-6 ">
-          <Carousel title={"Explore"} />
-          <Carousel title={"Top Most Viewed"} />
+          {results ? (
+            <>
+              <Carousel title={week} characters={results} />
+              <Carousel title={explore} characters={EXPLORE as unknown as Character[]} />
+            </>
+          ) : (
+            <Carousel title={explore} characters={EXPLORE as unknown as Character[]} />
+          )}
         </div>
       </section>
     </>
