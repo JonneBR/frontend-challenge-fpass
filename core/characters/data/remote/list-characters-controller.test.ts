@@ -2,7 +2,7 @@ import { Character, CharacterDataWrapper, LoadCharacters } from "core/characters
 import { HttpClient, HttpMethod, HttpRequest, HttpResponse } from "core/data/protocols/http"
 import { characterDataWrapper, results } from "./dummy"
 
-class HttpClientSpy<R = any> implements HttpClient<R> {
+class HttpClientSpy<R = never> implements HttpClient<R> {
   url = ""
   method: HttpMethod = "GET"
   body?: object
@@ -43,11 +43,21 @@ class ListCharactersController implements LoadCharacters {
 describe("fetch-http-client", () => {
   it("should return a list of characters", async () => {
     const BASE_URL = "https://gateway.marvel.com"
-    const httpClientSpy = new HttpClientSpy()
+    const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
     const sut = new ListCharactersController(BASE_URL, httpClientSpy)
 
     httpClientSpy.response.body = characterDataWrapper
     const response = await sut.getCharacters()
     expect(response).toBe(results)
+  })
+
+  it("should call httpClient with correct URL and Method", async () => {
+    const BASE_URL = "https://gateway.marvel.com"
+    const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
+    const sut = new ListCharactersController(BASE_URL, httpClientSpy)
+
+    await sut.getCharacters()
+    expect(httpClientSpy.url).toBe(BASE_URL)
+    expect(httpClientSpy.method).toBe("GET")
   })
 })
