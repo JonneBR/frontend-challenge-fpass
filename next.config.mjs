@@ -16,6 +16,9 @@ const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
       { source: "/ping", destination: "/api/health" },
     ]
   },
+  images: {
+    domains: ["i.annihil.us"],
+  },
 })
 
 export default config
