@@ -1,8 +1,22 @@
 import Head from "next/head"
 import Home from "components/Home/Home"
+import { makeListCharactersController } from "core/main/factories/make-list-characters-controller"
 import "styles/tailwind.css"
 
-export default function Web() {
+export default async function Web() {
+  const askCharacters = makeListCharactersController(
+    `https://gateway.marvel.com/v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&series=16516,27567&orderBy=-modified`
+  )
+
+  async function getData() {
+    try {
+      return await askCharacters.getCharacters()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const data = await getData()
+
   return (
     <>
       <Head>
@@ -15,7 +29,7 @@ export default function Web() {
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Home />
+      <Home results={data} />
     </>
   )
 }
