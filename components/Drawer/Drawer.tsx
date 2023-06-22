@@ -36,13 +36,13 @@ export default function Drawer(props: Props) {
       <input
         type="checkbox"
         id="drawer-toggle"
-        className="peer sr-only relative "
+        className="peer sr-only relative hidden"
         checked={open}
         onChange={handleToggle}
       />
 
       <div
-        className={`fixed left-0 top-0 z-20 h-full w-80 -translate-x-full bg-white shadow-lg transition-all duration-500 ${
+        className={`fixed left-0 top-0 z-20 h-full w-80 -translate-x-full bg-gray-700 shadow-lg transition-all duration-500 ${
           open ? "peer-checked:translate-x-0" : ""
         }`}
       >
