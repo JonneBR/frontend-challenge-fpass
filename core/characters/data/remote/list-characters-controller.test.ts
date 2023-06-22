@@ -32,11 +32,8 @@ class ListCharactersController implements LoadCharacters {
 
     const characters = httpResponse.body?.data.results
     const isOk = httpResponse.statusCode === 200
-    if (isOk && characters) {
-      return characters
-    }
-    return []
-    // throw new Error("httpResponse.statusCode")
+    if (isOk && characters) return characters
+    throw new Error("Something went wrong!")
   }
 }
 
@@ -56,8 +53,19 @@ describe("fetch-http-client", () => {
     const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
     const sut = new ListCharactersController(BASE_URL, httpClientSpy)
 
+    httpClientSpy.response.body = characterDataWrapper
     await sut.getCharacters()
     expect(httpClientSpy.url).toBe(BASE_URL)
     expect(httpClientSpy.method).toBe("GET")
+  })
+
+  it("should throw an Error", async () => {
+    const BASE_URL = "https://gateway.marvel.com"
+    const httpClientSpy = new HttpClientSpy<CharacterDataWrapper>()
+    httpClientSpy.response.statusCode = 404
+    const sut = new ListCharactersController(BASE_URL, httpClientSpy)
+
+    const response = sut.getCharacters()
+    await expect(response).rejects.toThrow("Something went wrong!")
   })
 })
