@@ -1,20 +1,4 @@
-export interface HttpClient<R = any> {
-  request: (data: HttpRequest) => Promise<HttpResponse<R>>
-}
-
-export interface HttpRequest {
-  url: string
-  method: HttpMethod
-  headers?: HeadersInit
-  body?: any
-}
-
-export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"
-
-export interface HttpResponse<T = any> {
-  statusCode: number
-  body?: T
-}
+import { HttpClient, HttpRequest, HttpResponse } from "core/data/protocols/http"
 
 export class FetchHttpClient implements HttpClient {
   async request(data: HttpRequest): Promise<HttpResponse> {
