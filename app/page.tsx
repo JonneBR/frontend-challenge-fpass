@@ -2,7 +2,7 @@ import Head from "next/head"
 import { APRESENTATION_ITEMS } from "apresentation-items"
 import Carousel from "components/Carousel/Carousel"
 import type { Character } from "core/characters/domain/character"
-import { makeListCharactersController } from "core/main/factories/make-list-characters-controller"
+import makeListCharactersController from "core/main/factories/make-list-characters-controller"
 import EXPLORE from "explore-characters.json"
 import "styles/tailwind.css"
 

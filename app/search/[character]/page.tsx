@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Carousel from "components/Carousel/Carousel"
 import SearchedSection, { CharacterBasic } from "components/SearchedSection/SearchedSection"
-import { makeListCharactersController } from "core/main/factories/make-list-characters-controller"
+import makeListCharactersController from "core/main/factories/make-list-characters-controller"
 import "styles/tailwind.css"
 
 const mysteriousMock: CharacterBasic = {
