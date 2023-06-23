@@ -2,22 +2,11 @@ import Head from "next/head"
 import { APRESENTATION_ITEMS } from "apresentation-items"
 import Carousel from "components/Carousel/Carousel"
 import type { Character } from "core/characters/domain/character"
-import makeListCharactersController from "core/main/factories/make-list-characters-controller"
+import { getData } from "core/main/factories/make-list-characters-controller"
 import EXPLORE from "explore-characters.json"
 import "styles/tailwind.css"
 
 export default async function Web() {
-  const askCharacters = makeListCharactersController(
-    `https://gateway.marvel.com/v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&series=16516,27567&orderBy=-modified`
-  )
-
-  async function getData() {
-    try {
-      return await askCharacters.getCharacters()
-    } catch (error) {
-      console.log(error)
-    }
-  }
   const data = await getData()
 
   const main = APRESENTATION_ITEMS.home.mainTitle
