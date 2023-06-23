@@ -27,7 +27,7 @@ export default function Drawer(props: Props) {
     updatePageScroll()
   }, [open, lockBackgroundScroll])
 
-  const handleToggle = () => {
+  function handleToggle() {
     onClose(!open)
   }
 
@@ -47,8 +47,19 @@ export default function Drawer(props: Props) {
         }`}
       >
         <div className="flex justify-end">
-          <button className="p-2 text-black " onClick={handleToggle}>
-            X
+          <button className="p-2" onClick={handleToggle}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-6 w-6"
+            >
+              <path d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
         {children}
