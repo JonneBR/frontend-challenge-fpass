@@ -1,33 +1,22 @@
 import Head from "next/head"
+import { APRESENTATION_ITEMS } from "apresentation-items"
 import Carousel from "components/Carousel/Carousel"
-import SearchedSection, { CharacterBasic } from "components/SearchedSection/SearchedSection"
-import makeListCharactersController from "core/main/factories/make-list-characters-controller"
+import SearchedSection, { type CharacterBasic } from "components/SearchedSection/SearchedSection"
+import { getDataV2 } from "core/main/factories/make-list-characters-controller"
 import "styles/tailwind.css"
 
 const mysteriousMock: CharacterBasic = {
-  name: "Mysterious McUnknown.",
-  description:
-    "Oh no! It seems like you entered an invalid character name. The superheroes and villains are probably taking a day off from saving the world and couldn't recognize the name you provided. Please try again with a valid character name, and they'll be more than happy to assist you in your quest! Stay heroic!",
+  name: APRESENTATION_ITEMS.search.mainTitle,
+  description: APRESENTATION_ITEMS.search.subTitle,
 }
 
 export default async function Searched({ params }: { params: { character: string } }) {
   const normalizedValue = decodeURIComponent(params.character)
-  const askCharacters = makeListCharactersController(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&nameStartsWith=${normalizedValue}`
+  const results = await getDataV2(
+    `v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&nameStartsWith=${normalizedValue}`
   )
-
-  async function getData() {
-    try {
-      return await askCharacters.getCharacters()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const results = await getData()
   const character = results && results.length > 0 ? results[0] : mysteriousMock
-
-  const explore = <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Based on your search:</h2>
+  const explore = APRESENTATION_ITEMS.search.carousel.explore
 
   return (
     <>

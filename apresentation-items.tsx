@@ -15,4 +15,11 @@ export const APRESENTATION_ITEMS = {
       ),
     },
   },
+  search: {
+    mainTitle: "Mysterious McUnknown.",
+    subTitle: `Oh no! It seems like you entered an invalid character name. The superheroes and villains are probably taking a day off from saving the world and couldn't recognize the name you provided. Please try again with a valid character name, and they'll be more than happy to assist you in your quest! Stay heroic!`,
+    carousel: {
+      explore: <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Based on your search:</h2>,
+    },
+  },
 }
