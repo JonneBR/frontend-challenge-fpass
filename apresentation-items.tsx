@@ -1,7 +1,7 @@
 export const APRESENTATION_ITEMS = {
   home: {
     mainTitle: "Marvel Mania:",
-    subTitle: "Exploring the Marvel Universe and its IconicCharacters",
+    subTitle: " Exploring the Marvel Universe and its IconicCharacters",
     description: `Unleash your inner superhero with our captivating blog, 'Marvel Mania,' where we dive deep into the
     extraordinary world of Marvel characters. From the mighty Avengers to the enigmatic X-Men, discover the
     incredible powers, complex backstories, and thrilling adventures that make Marvel's characters truly
