@@ -2,12 +2,14 @@ import Head from "next/head"
 import { APRESENTATION_ITEMS } from "apresentation-items"
 import Carousel from "components/Carousel/Carousel"
 import type { Character } from "core/characters/domain/character"
-import { getData } from "core/main/factories/make-list-characters-controller"
+import { getDataV2 } from "core/main/factories/make-list-characters-controller"
 import EXPLORE from "explore-characters.json"
 import "styles/tailwind.css"
 
 export default async function Web() {
-  const data = await getData()
+  const data = await getDataV2(
+    `v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&series=16516,27567&orderBy=-modified`
+  )
 
   const main = APRESENTATION_ITEMS.home.mainTitle
   const sub = APRESENTATION_ITEMS.home.subTitle
@@ -20,7 +22,8 @@ export default async function Web() {
         <meta property="og:url" content="https://next-enterprise.vercel.app/" />
         <meta
           property="og:image"
-          content="https://raw.githubusercontent.com/Blazity/next-enterprise/main/project-logo.png"
+          // content="https://raw.githubusercontent.com/Blazity/next-enterprise/main/project-logo.png"
+          content="../images/spider-man-wallpaper.jpg"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
