@@ -25,19 +25,19 @@ const Carousel = ({ title, characters }: CarouselProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
   const carousel = useRef<HTMLDivElement>(null)
 
-  const movePrev = () => {
+  function movePrev() {
     if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1)
     }
   }
 
-  const moveNext = () => {
+  function moveNext() {
     if (carousel.current !== null && carousel.current.offsetWidth * currentIndex <= maxScrollWidth.current) {
       setCurrentIndex((prevState) => prevState + 1)
     }
   }
 
-  const isDisabled = (direction: string) => {
+  function isDisabled(direction: string) {
     if (direction === "prev") {
       return currentIndex <= 0
     }
