@@ -11,25 +11,22 @@ const mysteriousMock: CharacterBasic = {
 }
 
 export default async function Searched({ params }: { params: { character: string } }) {
-  let data: CharacterBasic
   const normalizedValue = decodeURIComponent(params.character)
   const askCharacters = makeListCharactersController(
-    `https://gateway.marvel.com/v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&nameStartsWith=${normalizedValue}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/public/characters?apikey=${process.env.PUBLIC_KEY}&ts=${process.env.TS}&hash=${process.env.HASH}&nameStartsWith=${normalizedValue}`
   )
+
   async function getData() {
     try {
       return await askCharacters.getCharacters()
     } catch (error) {
       console.log(error)
     }
-    return []
   }
+
   const results = await getData()
-  if (results && results.length > 0) {
-    data = results[0]
-  } else {
-    data = mysteriousMock
-  }
+  const character = results && results.length > 0 ? results[0] : mysteriousMock
+
   const explore = <h2 className="mb-12 text-4xl font-bold leading-8 text-white">Based on your search:</h2>
 
   return (
@@ -44,10 +41,10 @@ export default async function Searched({ params }: { params: { character: string
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <SearchedSection character={data} />
+      <SearchedSection character={character} />
       <section className="bg-gray-900">
         <div className="mx-auto max-w-full px-4 py-8 sm:py-16 lg:px-6 ">
-          <Carousel title={explore} characters={results} />
+          <Carousel title={explore} characters={results || []} />
         </div>
       </section>
     </>
